@@ -55,3 +55,4 @@ source .venv/bin/activate        # On Windows: .venv\Scripts\activate
 
 pip install --upgrade pip
 pip install -r requirements.txt
+```
