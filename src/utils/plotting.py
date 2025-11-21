@@ -34,11 +34,17 @@ def plot_field_trajectory(
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
-    # Left: heatmap of u(x, t)
+    data = u_seq.squeeze(1)  # (T, N)
+    vmax = float(data.abs().max().item() + 1e-6)
+
+    # Left: heatmap of u(x, t) with symmetric color scale
     im = axes[0].imshow(
-        u_seq.squeeze(1),  # (T, N)
+        data,
         aspect="auto",
         origin="lower",
+        vmin=-vmax,
+        vmax=vmax,
+        cmap="viridis",
     )
     axes[0].set_title(f"{title} (heatmap)")
     axes[0].set_xlabel("Position (x)")
@@ -49,6 +55,7 @@ def plot_field_trajectory(
     times_to_plot = [0, T // 2, T - 1] if T >= 3 else list(range(T))
     for t in times_to_plot:
         axes[1].plot(u_seq[t, 0].numpy(), label=f"t={t}")
+    axes[1].set_ylim(-vmax, vmax)
     axes[1].set_title(f"{title} (slices)")
     axes[1].set_xlabel("Position (x)")
     axes[1].set_ylabel("u(x, t)")
